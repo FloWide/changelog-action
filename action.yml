@@ -1,12 +1,21 @@
-name: 'Container Action Template'
-description: 'Get started with Container actions'
-author: 'GitHub'
+name: 'Changelog Action'
+description: 'Generate basic changelog from commits'
+author: 'FloWide'
 inputs: 
-  myInput:
-    description: 'Input to use'
-    default: 'world'
+  from-tag:
+    description: 'Tag to generate from'
+    default: ''
+    required: false
+  to-tag:
+    description: 'Tag to generate to'
+    default: ''
+    required: false
+outputs:
+  changelog:
+    description: 'Markdown changelog from commits'
 runs:
   using: 'docker'
   image: 'Dockerfile'
-  args:
-    - ${{ inputs.myInput }}
+  env:
+    FROM_TAG: ${{inputs.from-tag}}
+    TO_TAG: ${{inputs.to-tag}}
