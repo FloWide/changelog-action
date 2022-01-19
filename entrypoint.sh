@@ -19,6 +19,9 @@ changes=$"### Changes (${to_tag}):"
 changes+=$'\n'
 changes=$"${changes}$(git log $from_tag...$to_tag --pretty=format:'- %s (%H)%n' --reverse | grep -v Merge )"
 
+changes="${changes//'%'/'%25'}"
+changes="${changes//$'\n'/'%0A'}"
+changes="${changes//$'\r'/'%0D'}"
 
 echo "$changes"
 
