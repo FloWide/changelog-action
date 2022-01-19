@@ -1,4 +1,4 @@
-#!/bin/sh -l
+#!/bin/bash -l
 
 if [ -z "$FROM_TAG" ]; then
   from_tag=$(git tag --sort version:refname | tail -n 2 | head -n 1)
@@ -15,15 +15,13 @@ fi
 
 echo "Generating changelog from commits between $from_tag and $to_tag"
 
-changes="#### Changes (${to_tag}):\n"
-changes="${changes}$(git log $from_tag...$to_tag --pretty=format:'- %s (%H)\n' --reverse | grep -v Merge )"
+changes=$"### Changes (${to_tag}):"
+changes+=$'\n'
+changes=$"${changes}$(git log $from_tag...$to_tag --pretty=format:'- %s (%H)%n' --reverse | grep -v Merge )"
 
-
-changes="${changes//'%'/'%25'}"
-changes="${changes//$'\n'/'%0A'}"
-changes="${changes//$'\r'/'%0D'}"
 
 echo "$changes"
 
 echo "::set-output name=changelog::$changes"
+
 
